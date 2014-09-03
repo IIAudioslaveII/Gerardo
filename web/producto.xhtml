@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="150">
+                <center> <h1> Sistema de Pedidos</h1></center>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="200" rendered="true" collapsible="true" resizable="true" closable="true" header="Menu"> 
+                <h:form>
+                    <p:commandLink value="Productos" /><br></br>
+                </h:form>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="center">  
+                <h:form prependId="false">            
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Nombre Producto"/>
+                        <p:inputText value="#{productoBean.selectedProducto.nomnProducto}"/>
+                        
+                        <p:outputLabel value="Categoria"/>
+                        <h:selectOneMenu value="#{productoBean.selectedProducto.idCategoria}">
+                            <f:selectItems value="#{categoriaBean.selectItemsCategorias}" />       
+                        </h:selectOneMenu>
+                        
+                        <p:outputLabel value="Precio"/>
+                        <p:inputText value="#{productoBean.selectedProducto.precioU}"/>
+                        
+                        <p:outputLabel value="Stock"/>
+                        <p:inputText value="#{productoBean.selectedProducto.stock}"/>
+                        
+                        <p:commandButton actionListener="#{productoBean.crear()}" value="Agregar" update="productos" />
+                    </p:panelGrid>
+                    <p:dataTable id="productos" value="#{productoBean.productos}" var="produc">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nombre Producto"/>
+                            </f:facet>
+                            <h:outputText value="#{produc.nomnProducto}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Categoria"/>
+                            </f:facet>
+                            <h:outputText value="#{produc.idCategoria}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Precio Unitario"/>
+                            </f:facet>
+                            <h:outputText value="#{produc.precioU}" />
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Stock"/>
+                            </f:facet>
+                            <h:outputText value="#{produc.stock}" />
+                        </p:column>     
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Eliminar"></h:outputText>
+                            </f:facet>                
+
+                            <p:commandButton  value="Eliminar" update="productos" id="btnDelete" actionListener="#{productoBean.eliminar(produc.idProducto)}">    
+                            </p:commandButton>              
+
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Editar"></h:outputText>
+                                </f:facet>    
+                                 <p:commandButton onclick="dlgProductoU.show()" value="Editar"  id="btnUpdate">
+                                    <f:setPropertyActionListener value="#{produc}"  
+                                                                 target="#{productoBean.selectedProducto}" />  
+
+                                </p:commandButton>
+                            </p:column>                   
+                    </p:dataTable>  
+                </h:form>
+            </p:layoutUnit>
+            
+        </p:layout>
+        
+        
+
+    </h:body>
+</html>
+

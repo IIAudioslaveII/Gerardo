@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" size="150">
+                    <center> <h1> Sistema de Pedidos</h1></center>
+                </p:layoutUnit>
+
+
+                <p:layoutUnit position="west" size="200" rendered="true" collapsible="true" resizable="true" closable="true" header="Menu"> 
+                    <h:form>
+                        <p:commandLink value="Cliente" onclick="dlgCliente.show()"/><br></br>
+                        <p:commandLink value="Productos" onclick="dlgCliente.show()"/><br></br>
+                        <p:commandLink value="Pedido" onclick="dlgCliente.show()"/><br></br>
+                    </h:form>
+                </p:layoutUnit>
+
+
+                <p:layoutUnit position="center">  
+                    <h:form prependId="false">
+                        <p:dialog widgetVar="dlgCliente" resizable="false" header="Crear cliente" height="450" width="550"  >    
+
+                            <p:panelGrid columns="2">
+
+                                <p:outputLabel value="Apellidos"/>
+                                <p:inputText value="#{clienteBean.clienteSelected.apellido}"/>
+
+                                <p:outputLabel value="Nombres"/>
+                                <p:inputText value="#{clienteBean.clienteSelected.nombre}" />
+
+                                <p:outputLabel value="direccion"/>
+                                <p:inputText value="#{clienteBean.clienteSelected.direccion}"/>
+
+                                <p:outputLabel value="Telefono"/>
+                                <p:inputText value="#{clienteBean.clienteSelected.telefono}"/>
+
+                                <p:outputLabel value="Usuario"/> 
+                                <p:inputText value="#{clienteBean.clienteSelected.usuario}"/>
+
+                                <p:outputLabel value="Contraseña"/>
+                                <p:inputText value="#{clienteBean.clienteSelected.contraseña}"/>
+
+                                <p:commandButton actionListener="#{clienteBean.crear()}" value="Agregar" update="contactos" oncomplete="dlgCliente.hide()"/>
+                            </p:panelGrid>
+                        </p:dialog>             
+
+
+                        <p:dataTable id="contactos" value="#{clienteBean.clientes}" var="client">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Apellido"/>
+                                </f:facet>
+                                <h:outputText value="#{client.idCliente}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Apellido"/>
+                                </f:facet>
+                                <h:outputText value="#{client.apellido}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="nombre"/>
+                                </f:facet>
+                                <h:outputText value="#{client.nombre}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Telefone"/>
+                                </f:facet>
+                                <h:outputText value="#{client.direccion}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Celular"/>
+                                </f:facet>
+                                <h:outputText value="#{client.telefono}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="usuario"/>
+                                </f:facet>
+                                <h:outputText value="#{client.usuario}" />
+                            </p:column>           
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="contraseña "/>
+                                </f:facet>
+                                <h:outputText value="#{client.contraseña}" />
+                            </p:column>              
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Eliminar"></h:outputText>
+                                </f:facet>                
+
+                                <p:commandButton  value="Eliminar" update="contactos" id="btnDelete" actionListener="#{clienteBean.eliminar(client.idCliente)}">  
+                                    <f:setPropertyActionListener value="#{client}"  
+                                                                 target="#{clienteBean.clienteSelected}" />  
+                                </p:commandButton>              
+
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Editar"></h:outputText>
+                                </f:facet>    
+                                <p:commandButton onclick="dlgClienteU.show()" value="Editar"  id="btnUpdate">
+                                    <f:setPropertyActionListener value="#{client}"  
+                                                                 target="#{clienteBean.clienteSelected}" />  
+
+                                </p:commandButton>
+                            </p:column>   
+                        </p:dataTable>  
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:dialog widgetVar="dlgClienteU" resizable="false" header="Actualizar cliente" height="450" width="550"  >                      
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Codigo"/>
+                        <p:inputText value="#{clienteBean.clienteSelected.idCliente}"/>
+                        
+                        <p:outputLabel value="Apellidos"/>
+                        <p:inputText value="#{clienteBean.clienteSelected.apellido}"/>
+                        
+                        <p:outputLabel value="Nombres"/>
+                        <p:inputText value="#{clienteBean.clienteSelected.nombre}" />
+                        
+                        <p:outputLabel value="direccion"/>
+                        <p:inputText value="#{clienteBean.clienteSelected.direccion}"/> 
+                        
+                        <p:outputLabel value="Telefono"/>
+                        <p:inputText value="#{clienteBean.clienteSelected.telefono}"/>
+                        
+                        <p:outputLabel value="Usuario"/> 
+                        <p:inputText value="#{clienteBean.clienteSelected.usuario}"/>
+                        
+                        <p:outputLabel value="Contraseña"/>
+                        <p:inputText value="#{clienteBean.clienteSelected.contraseña}"/>                   
+                        <p:commandButton actionListener="#{clienteBean.actualizar(clienteBean.clienteSelected)}" value="Actualizar"  oncomplete="dlgClienteU.hide()">
+                                    <f:setPropertyActionListener value="#{client}"  
+                                                                 target="#{clienteBean.clienteSelected}" />                              
+                        </p:commandButton>
+                    </p:panelGrid>
+                </p:dialog> 
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+
